@@ -71,7 +71,7 @@ Consequência para o produto: em volume alto, a busca de CNPJ exige um plano pag
 | Clients HTTP (ViaCepClient, CnpjWsClient) | Presentes e deployados na DevEd, com 11 testes usando HttpCalloutMock. Erros de infraestrutura viram ExternalApiException; entrada inválida vira InvalidInputException. |
 | Service (BuscaDadosService) e Controller (BuscaDadosController) | Presentes e deployados na DevEd. O Controller traduz erros para mensagens genéricas e registra o detalhe via BuscaErrorReporter. |
 | Cache (`BuscaCacheStore`) | Presente: Platform Cache (partição `BuscaCache`) com fallback no objeto `Busca_Cache__c`. Testado com busca real: 231 ms na API e 1 ms no cache. |
-| LWC de busca | **Não iniciado.** |
+| LWC de busca (`cepCnpjBusca`) | Presente e deployado, com 8 testes Jest e App Page "Busca de Dados Cadastrais". Acessibilidade: rótulos, região aria-live, erros com role alert e foco no resultado. |
 | Testes com `HttpCalloutMock` | **Não iniciados.** |
 
 ## 4. Fases previstas
@@ -80,5 +80,5 @@ Consequência para o produto: em volume alto, a busca de CNPJ exige um plano pag
 2. **Clients HTTP** para ViaCEP e CNPJ.ws, com testes e mocks. *(concluída)*
 3. **Service e Controller**, com validação e tratamento de erro. *(concluída)*
 4. **Cache** com Platform Cache e fallback. *(concluída)*
-5. **LWC de busca**, com acessibilidade.
+5. **LWC de busca**, com acessibilidade. *(concluída)*
 6. **README final**, com deploy e demonstração.

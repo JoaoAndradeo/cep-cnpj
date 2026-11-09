@@ -16,8 +16,6 @@
 ## Limitações conhecidas
 
 - **CNPJ:** a API pública do CNPJ.ws aceita 3 consultas por minuto por IP. Em volume maior, é preciso um plano pago.
-- **Cache:** ainda não implementado (Fase 4).
-- **LWC de busca:** ainda não implementado (Fase 5).
 
 ## Deploy (quando estiver pronto)
 

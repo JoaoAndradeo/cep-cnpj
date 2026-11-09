@@ -1,0 +1,84 @@
+<template>
+    <lightning-card title="Busca de dados cadastrais" icon-name="utility:search">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <lightning-radio-group
+                name="tipoBusca"
+                label="Tipo de busca"
+                options={typeOptions}
+                value={searchType}
+                type="button"
+                onchange={handleTypeChange}
+                disabled={isLoading}>
+            </lightning-radio-group>
+
+            <div class="slds-grid slds-gutters slds-grid_vertical-align-end slds-m-top_small">
+                <div class="slds-col slds-size_3-of-4">
+                    <lightning-input
+                        type="text"
+                        label={inputLabel}
+                        value={inputValue}
+                        placeholder={placeholder}
+                        maxlength={maxLength}
+                        onchange={handleInput}
+                        onkeyup={handleKeyUp}
+                        disabled={isLoading}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-4">
+                    <lightning-button
+                        variant="brand"
+                        label="Buscar"
+                        onclick={handleSearch}
+                        disabled={isLoading}>
+                    </lightning-button>
+                </div>
+            </div>
+
+            <template if:true={inputError}>
+                <div class="slds-text-color_error slds-m-top_x-small" role="alert">{inputError}</div>
+            </template>
+        </div>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-is-relative" aria-live="polite">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Buscando dados" size="medium"></lightning-spinner>
+            </template>
+
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error" role="alert">{errorMessage}</div>
+            </template>
+
+            <template if:true={notFound}>
+                <p class="slds-text-body_regular">Nenhum resultado encontrado para este {inputLabel}.</p>
+            </template>
+
+            <template if:true={hasAddress}>
+                <section class="result" aria-labelledby="titulo-endereco">
+                    <h3 id="titulo-endereco" class="slds-text-heading_small" tabindex="-1" data-result-heading>Endereço</h3>
+                    <dl class="slds-m-top_x-small">
+                        <template for:each={addressFields} for:item="item">
+                            <div key={item.key} class="slds-grid slds-m-bottom_x-small">
+                                <dt class="slds-text-title slds-size_1-of-3">{item.label}</dt>
+                                <dd class="slds-size_2-of-3">{item.value}</dd>
+                            </div>
+                        </template>
+                    </dl>
+                </section>
+            </template>
+
+            <template if:true={hasCompany}>
+                <section class="result" aria-labelledby="titulo-empresa">
+                    <h3 id="titulo-empresa" class="slds-text-heading_small" tabindex="-1" data-result-heading>Empresa</h3>
+                    <dl class="slds-m-top_x-small">
+                        <template for:each={companyFields} for:item="item">
+                            <div key={item.key} class="slds-grid slds-m-bottom_x-small">
+                                <dt class="slds-text-title slds-size_1-of-3">{item.label}</dt>
+                                <dd class="slds-size_2-of-3">{item.value}</dd>
+                            </div>
+                        </template>
+                    </dl>
+                </section>
+            </template>
+        </div>
+    </lightning-card>
+</template>
