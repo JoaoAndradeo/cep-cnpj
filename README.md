@@ -92,7 +92,6 @@ Os testes Apex não fazem chamadas reais: usam `HttpCalloutMock` e stubs. As cha
 - **BrasilAPI não é usada:** ela foi a primeira escolha, mas bloqueia requisições vindas de servidores do Salesforce (HTTP 403 do Cloudflare). A troca está registrada na seção 2.8 das decisões técnicas.
 - **Registro de erros:** o detalhe técnico vai para o debug log. A integração com o Logger do projeto `logger-platform-events` está prevista, mas não feita.
 - **Cache:** a partição Platform Cache tem 1 MB. Quando ela não está disponível na org, o cache usa o objeto `Busca_Cache__c`.
-- **Utilitários:** o repositório também reúne validadores e classes auxiliares de um projeto anterior (telefone, dias úteis, slugs). Eles estão testados, mas não fazem parte da tela de busca.
 - **Análise estática:** o projeto não passou pelo Code Analyzer.
 
 ## Próximos passos

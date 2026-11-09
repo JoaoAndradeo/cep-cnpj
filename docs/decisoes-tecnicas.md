@@ -65,7 +65,7 @@ Consequência para o produto: em volume alto, a busca de CNPJ exige um plano pag
 
 | Item | Situação |
 |---|---|
-| Validação de CPF e CNPJ, telefone, dias úteis, slugs e utilitários | Presente e deployado na DevEd: 109 testes passando, sem erros. |
+| Validação de CPF e CNPJ (CpfCnpjValidator) | Presente e testado. A biblioteca de Invocable Actions (dias úteis, telefone, slug e outras) foi separada para o repositório invocable-actions-library. |
 | Named Credentials `ViaCEP` e `CnpjWs` | Criadas (`NoAuthentication`) e testadas com chamadas reais pela org. |
 | Permission set `Busca_Dados_Cadastrais` | Criado, sem acessos ainda. |
 | Clients HTTP (ViaCepClient, CnpjWsClient) | Presentes e deployados na DevEd, com 11 testes usando HttpCalloutMock. Erros de infraestrutura viram ExternalApiException; entrada inválida vira InvalidInputException. |
