@@ -1,6 +1,6 @@
 /**
- * Ponto de entrada do LWC de busca. Traduz exceções em mensagens seguras para o usuário.
- * Detalhes técnicos vão para BuscaErrorReporter; a tela recebe só texto genérico.
+ * Controller do componente de busca. Devolve os dados ou uma mensagem segura para a tela.
+ * O erro técnico vai para o debug log; a tela recebe só o texto genérico.
  */
 public with sharing class BuscaDadosController {
 
@@ -18,10 +18,10 @@ public with sharing class BuscaDadosController {
         } catch (InvalidInputException e) {
             throw new AuraHandledException(e.getMessage());
         } catch (ExternalApiException e) {
-            BuscaErrorReporter.report('buscarCep', e);
+            System.debug(LoggingLevel.ERROR, '[CEP] ' + e.getMessage());
             throw new AuraHandledException(MSG_UNAVAILABLE);
         } catch (Exception e) {
-            BuscaErrorReporter.report('buscarCep', e);
+            System.debug(LoggingLevel.ERROR, '[CEP] ' + e.getTypeName() + ': ' + e.getMessage());
             throw new AuraHandledException(MSG_GENERIC);
         }
     }
@@ -33,10 +33,10 @@ public with sharing class BuscaDadosController {
         } catch (InvalidInputException e) {
             throw new AuraHandledException(e.getMessage());
         } catch (ExternalApiException e) {
-            BuscaErrorReporter.report('buscarCnpj', e);
+            System.debug(LoggingLevel.ERROR, '[CNPJ] ' + e.getMessage());
             throw new AuraHandledException(MSG_UNAVAILABLE);
         } catch (Exception e) {
-            BuscaErrorReporter.report('buscarCnpj', e);
+            System.debug(LoggingLevel.ERROR, '[CNPJ] ' + e.getTypeName() + ': ' + e.getMessage());
             throw new AuraHandledException(MSG_GENERIC);
         }
     }

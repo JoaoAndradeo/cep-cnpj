@@ -1,17 +1,5 @@
-/** Client HTTP do ViaCEP, via Named Credential ViaCEP. */
+/** Consulta CEP no ViaCEP pela Named Credential ViaCEP. */
 public with sharing class ViaCepClient implements ICepClient {
-
-    private static final String SERVICE = 'ViaCEP';
-
-    private final ExternalHttpClient http;
-
-    public ViaCepClient() {
-        this(new ExternalHttpClient());
-    }
-
-    public ViaCepClient(ExternalHttpClient http) {
-        this.http = http;
-    }
 
     public AddressInfo findByCep(String cep) {
         String digits = (cep == null) ? '' : cep.replaceAll('\\D', '');
@@ -19,14 +7,19 @@ public with sharing class ViaCepClient implements ICepClient {
             throw new InvalidInputException('CEP deve ter 8 dígitos.');
         }
 
-        HttpResponse response = http.get('callout:ViaCEP/' + digits + '/json/', SERVICE);
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('callout:ViaCEP/' + digits + '/json/');
+        request.setMethod('GET');
+        request.setTimeout(10000);
+
+        HttpResponse response = send(request);
         if (response.getStatusCode() == 404) {
             return null;
         }
 
-        Map<String, Object> body = parseBody(response.getBody());
-        // ViaCEP responde 200 com {"erro": true} quando o CEP não existe.
-        if (isTrue(body.get('erro'))) {
+        Map<String, Object> body = parse(response.getBody());
+        // Com CEP inexistente, o ViaCEP responde 200 e {"erro": true}.
+        if ('true'.equalsIgnoreCase(String.valueOf(body.get('erro')))) {
             return null;
         }
 
@@ -40,20 +33,29 @@ public with sharing class ViaCepClient implements ICepClient {
         return address;
     }
 
-    private static Map<String, Object> parseBody(String body) {
+    private static HttpResponse send(HttpRequest request) {
         try {
-            Object parsed = JSON.deserializeUntyped(body);
+            HttpResponse response = new Http().send(request);
+            Integer status = response.getStatusCode();
+            if (status == 404 || (status >= 200 && status < 300)) {
+                return response;
+            }
+            throw new ExternalApiException('ViaCEP: HTTP ' + status);
+        } catch (CalloutException e) {
+            throw new ExternalApiException('ViaCEP: falha de comunicação.');
+        }
+    }
+
+    private static Map<String, Object> parse(String responseBody) {
+        try {
+            Object parsed = JSON.deserializeUntyped(responseBody);
             if (parsed instanceof Map<String, Object>) {
                 return (Map<String, Object>) parsed;
             }
         } catch (JSONException e) {
-            // cai na exceção abaixo
+            // tratado abaixo
         }
-        throw new ExternalApiException(SERVICE + ': resposta inválida.');
-    }
-
-    private static Boolean isTrue(Object value) {
-        return 'true'.equalsIgnoreCase(String.valueOf(value));
+        throw new ExternalApiException('ViaCEP: resposta inválida.');
     }
 
     private static String text(Map<String, Object> body, String key) {

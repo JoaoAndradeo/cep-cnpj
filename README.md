@@ -25,7 +25,7 @@ flowchart LR
     K -->|1ª opção| P[(Platform Cache<br/>BuscaCache)]
     K -->|fallback| O[(Busca_Cache__c)]
     S --> CL[ViaCepClient<br/>CnpjWsClient]
-    CL --> H[ExternalHttpClient<br/>timeout 10 s]
+    CL --> H[Chamada HTTP com timeout de 10 s]
     H -->|Named Credential ViaCEP| V[viacep.com.br]
     H -->|Named Credential CnpjWs| W[publica.cnpj.ws]
 ```
@@ -96,6 +96,6 @@ Os testes Apex não fazem chamadas reais: usam `HttpCalloutMock` e stubs. As cha
 
 ## Próximos passos
 
-- Integrar o `BuscaErrorReporter` ao Logger.
+- Enviar os erros técnicos ao Logger, em vez do debug log.
 - Gravar o GIF de demonstração.
 - Avaliar outro provedor de CNPJ para uso em volume.
