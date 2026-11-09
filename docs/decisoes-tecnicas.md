@@ -57,7 +57,7 @@ Projeto em API **67.0**, o mesmo do `projeto-entrevista`.
 
 | Item | Situação |
 |---|---|
-| Validação de CPF e CNPJ, telefone, dias úteis, slugs e utilitários | Presente. Vieram do projeto anterior e ainda não foram validados nesta org. |
+| Validação de CPF e CNPJ, telefone, dias úteis, slugs e utilitários | Presente e deployado na DevEd: 109 testes passando, sem erros. |
 | Named Credentials `ViaCEP` e `BrasilAPI` | Criadas (`NoAuthentication`). |
 | Permission set `Busca_Dados_Cadastrais` | Criado, sem acessos ainda. |
 | Controller, Service e Clients HTTP | **Não iniciados.** Fase 2. |
