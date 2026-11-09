@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Busca Dados Cadastrais</label>
+    <description>Acesso à busca de CEP (ViaCEP) e CNPJ (BrasilAPI). Os acessos a classes e a páginas são adicionados nas próximas fases.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+</PermissionSet>
