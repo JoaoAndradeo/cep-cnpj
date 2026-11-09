@@ -61,7 +61,7 @@ Projeto em API **67.0**, o mesmo do `projeto-entrevista`.
 | Named Credentials `ViaCEP` e `BrasilAPI` | Criadas (`NoAuthentication`). |
 | Permission set `Busca_Dados_Cadastrais` | Criado, sem acessos ainda. |
 | Clients HTTP (ViaCepClient, BrasilApiClient) | Presentes e deployados na DevEd, com 11 testes usando HttpCalloutMock. Erros de infraestrutura viram ExternalApiException; entrada inválida vira InvalidInputException. |
-| Service e Controller | **Não iniciados.** Fase 3. |
+| Service (BuscaDadosService) e Controller (BuscaDadosController) | Presentes e deployados na DevEd. O Controller traduz erros para mensagens genéricas e registra o detalhe via BuscaErrorReporter. |
 | Cache | **Não iniciado.** Fase 3 ou 4. |
 | LWC de busca | **Não iniciado.** |
 | Testes com `HttpCalloutMock` | **Não iniciados.** |
@@ -70,7 +70,7 @@ Projeto em API **67.0**, o mesmo do `projeto-entrevista`.
 
 1. **Estrutura e metadados** (esta fase): Named Credentials, permission set e documento de decisões.
 2. **Clients HTTP** para ViaCEP e BrasilAPI, com testes e mocks. *(concluída)*
-3. **Service e Controller**, com validação e tratamento de erro.
+3. **Service e Controller**, com validação e tratamento de erro. *(concluída)*
 4. **Cache** com Platform Cache e fallback.
 5. **LWC de busca**, com acessibilidade.
 6. **README final**, com deploy e demonstração.
