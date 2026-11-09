@@ -5,6 +5,25 @@
         <apexClass>BuscaDadosController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <description>Acesso à busca de CEP (ViaCEP) e CNPJ (BrasilAPI).</description>
+    <description>Acesso à busca de CEP (ViaCEP) e CNPJ (CNPJ.ws), com cache.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Busca_Cache__c.Payload__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Busca_Cache__c.Expires_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Busca_Cache__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
 </PermissionSet>

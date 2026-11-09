@@ -1,8 +1,14 @@
 @IsTest
 private class BuscaDadosControllerTest {
 
+    /** Cada teste começa com cache vazio, para um resultado não vazar para outro. */
+    private static void isolateCache() {
+        BuscaDadosController.cacheStore = new TestStubs.MemoryCacheStore();
+    }
+
     @IsTest
     static void buscarCepReturnsAddress() {
+        isolateCache();
         TestStubs.CepStub cep = new TestStubs.CepStub();
         AddressInfo expected = new AddressInfo();
         expected.city = 'São Paulo';
@@ -16,14 +22,15 @@ private class BuscaDadosControllerTest {
 
     @IsTest
     static void buscarCepReturnsNullWhenNotFound() {
-        TestStubs.CepStub cep = new TestStubs.CepStub();
-        BuscaDadosController.cepClient = cep;
+        isolateCache();
+        BuscaDadosController.cepClient = new TestStubs.CepStub();
 
         System.assertEquals(null, BuscaDadosController.buscarCep('00000000'));
     }
 
     @IsTest
     static void buscarCepInvalidInputBecomesAuraException() {
+        isolateCache();
         BuscaDadosController.cepClient = new TestStubs.CepStub();
 
         Boolean thrown = false;
@@ -37,6 +44,7 @@ private class BuscaDadosControllerTest {
 
     @IsTest
     static void buscarCepExternalErrorBecomesAuraException() {
+        isolateCache();
         TestStubs.CepStub cep = new TestStubs.CepStub();
         cep.toThrow = new ExternalApiException('detalhe técnico que não pode vazar');
         BuscaDadosController.cepClient = cep;
@@ -52,6 +60,7 @@ private class BuscaDadosControllerTest {
 
     @IsTest
     static void buscarCepUnexpectedErrorBecomesAuraException() {
+        isolateCache();
         TestStubs.CepStub cep = new TestStubs.CepStub();
         cep.toThrow = new TypeException('falha inesperada');
         BuscaDadosController.cepClient = cep;
@@ -67,19 +76,21 @@ private class BuscaDadosControllerTest {
 
     @IsTest
     static void buscarCnpjReturnsCompany() {
+        isolateCache();
         TestStubs.CnpjStub cnpj = new TestStubs.CnpjStub();
         CompanyInfo expected = new CompanyInfo();
-        expected.registrationStatus = 'ATIVA';
+        expected.registrationStatus = 'Ativa';
         cnpj.result = expected;
         BuscaDadosController.cnpjClient = cnpj;
 
         CompanyInfo company = BuscaDadosController.buscarCnpj('11.222.333/0001-81');
 
-        System.assertEquals('ATIVA', company.registrationStatus);
+        System.assertEquals('Ativa', company.registrationStatus);
     }
 
     @IsTest
     static void buscarCnpjInvalidInputBecomesAuraException() {
+        isolateCache();
         BuscaDadosController.cnpjClient = new TestStubs.CnpjStub();
 
         Boolean thrown = false;
@@ -93,8 +104,9 @@ private class BuscaDadosControllerTest {
 
     @IsTest
     static void buscarCnpjExternalErrorBecomesAuraException() {
+        isolateCache();
         TestStubs.CnpjStub cnpj = new TestStubs.CnpjStub();
-        cnpj.toThrow = new ExternalApiException('HTTP 500');
+        cnpj.toThrow = new ExternalApiException('HTTP 429');
         BuscaDadosController.cnpjClient = cnpj;
 
         Boolean thrown = false;
@@ -103,6 +115,6 @@ private class BuscaDadosControllerTest {
         } catch (AuraHandledException e) {
             thrown = true;
         }
-        System.assert(thrown, 'Falha da BrasilAPI deve virar AuraHandledException');
+        System.assert(thrown, 'Limite ou falha do CNPJ.ws deve virar AuraHandledException');
     }
 }

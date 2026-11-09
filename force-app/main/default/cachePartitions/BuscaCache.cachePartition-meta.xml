@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlatformCachePartition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <isDefaultPartition>false</isDefaultPartition>
+    <masterLabel>BuscaCache</masterLabel>
+    <platformCachePartitionTypes>
+        <allocatedCapacity>1</allocatedCapacity>
+        <cacheType>Organization</cacheType>
+    </platformCachePartitionTypes>
+    <platformCachePartitionTypes>
+        <allocatedCapacity>0</allocatedCapacity>
+        <cacheType>Session</cacheType>
+    </platformCachePartitionTypes>
+</PlatformCachePartition>

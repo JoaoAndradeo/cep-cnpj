@@ -6,6 +6,7 @@ public with sharing class BuscaDadosController {
 
     @TestVisible private static ICepClient cepClient = new ViaCepClient();
     @TestVisible private static ICnpjClient cnpjClient = new CnpjWsClient();
+    @TestVisible private static ICacheStore cacheStore = new BuscaCacheStore();
 
     private static final String MSG_UNAVAILABLE = 'Serviço de consulta indisponível no momento. Tente novamente em instantes.';
     private static final String MSG_GENERIC = 'Não foi possível concluir a busca. Tente novamente.';
@@ -41,6 +42,6 @@ public with sharing class BuscaDadosController {
     }
 
     private static BuscaDadosService service() {
-        return new BuscaDadosService(cepClient, cnpjClient);
+        return new BuscaDadosService(cepClient, cnpjClient, cacheStore);
     }
 }
