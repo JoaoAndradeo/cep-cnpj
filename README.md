@@ -13,12 +13,11 @@
 - **Testes de apoio:** `TestDataFactory` e as classes `*Test`.
 - **Flow de demonstração** (`Demo_Invocable_Actions`) e o permission set `Invocable_Actions_User`.
 
-## O que falta
+## Limitações conhecidas
 
-- **Named Credentials** para BrasilAPI e ViaCEP. Não estão neste repositório.
-- **Permission set `Busca_Dados_Cadastrais`**, que o projeto original previa.
-- **Documentação de decisões técnicas** (`docs/decisoes-tecnicas.md`).
-- **Validação:** o código ainda não foi deployado nem testado em uma org neste repositório.
+- **CNPJ:** a API pública do CNPJ.ws aceita 3 consultas por minuto por IP. Em volume maior, é preciso um plano pago.
+- **Cache:** ainda não implementado (Fase 4).
+- **LWC de busca:** ainda não implementado (Fase 5).
 
 ## Deploy (quando estiver pronto)
 

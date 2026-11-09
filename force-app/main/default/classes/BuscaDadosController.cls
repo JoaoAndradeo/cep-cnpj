@@ -5,7 +5,7 @@
 public with sharing class BuscaDadosController {
 
     @TestVisible private static ICepClient cepClient = new ViaCepClient();
-    @TestVisible private static ICnpjClient cnpjClient = new BrasilApiClient();
+    @TestVisible private static ICnpjClient cnpjClient = new CnpjWsClient();
 
     private static final String MSG_UNAVAILABLE = 'Serviço de consulta indisponível no momento. Tente novamente em instantes.';
     private static final String MSG_GENERIC = 'Não foi possível concluir a busca. Tente novamente.';

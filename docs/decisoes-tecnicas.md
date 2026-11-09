@@ -4,7 +4,7 @@
 
 ## 1. Objetivo
 
-Buscar endereço por CEP (ViaCEP) e dados cadastrais por CNPJ (BrasilAPI) em uma tela LWC, com validação, cache, tratamento de erro e acessibilidade.
+Buscar endereço por CEP (ViaCEP) e dados cadastrais por CNPJ (CNPJ.ws) em uma tela LWC, com validação, cache, tratamento de erro e acessibilidade.
 
 ## 2. Decisões
 
@@ -21,7 +21,7 @@ O LWC não chama as APIs diretamente. O Apex faz o callout usando **Named Creden
 |---|---|
 | Controller (`@AuraEnabled`) | Recebe o pedido do LWC, valida a entrada e devolve o resultado. Não contém regra de negócio. |
 | Service | Regra de negócio: escolhe cache ou API, normaliza o resultado. |
-| Client HTTP | Monta a requisição, chama a Named Credential e interpreta a resposta. Uma classe por API (`ViaCepClient`, `BrasilApiClient`). |
+| Client HTTP | Monta a requisição, chama a Named Credential e interpreta a resposta. Uma classe por API (`ViaCepClient`, `CnpjWsClient`). |
 
 Cada client é injetável por interface. Assim os testes trocam a API real por um stub ou por um `HttpCalloutMock`.
 
@@ -47,20 +47,28 @@ Cada client é injetável por interface. Assim os testes trocam a API real por u
 
 - Consultas em `WITH USER_MODE`.
 - Acesso ao app pelo permission set `Busca_Dados_Cadastrais`.
-- Named Credentials sem autenticação, porque ViaCEP e BrasilAPI são públicas e não recebem dados sensíveis.
+- Named Credentials sem autenticação, porque ViaCEP e CNPJ.ws são públicas e não recebem dados sensíveis.
 
 ### 2.7 Versão da API
 
 Projeto em API **67.0**, o mesmo do `projeto-entrevista`.
+
+### 2.8 Provedor de CNPJ: CNPJ.ws, e não BrasilAPI
+
+A BrasilAPI foi a primeira escolha. Na validação real pela org, ela respondeu **HTTP 403** com uma página do Cloudflare, enquanto a mesma URL respondia 200 fora do Salesforce. O bloqueio é do provedor, e não há como contorná-lo do nosso lado sem disfarçar a origem das chamadas, o que não fazemos.
+
+Trocamos para a **API pública do CNPJ.ws**: documentação oficial, sem chave de acesso e limite de **3 consultas por minuto por IP** (HTTP 429 quando excedido). O `CnpjWsClient` implementa a mesma interface `ICnpjClient`, então Service e Controller não mudaram. O limite de 429 vira `ExternalApiException`, tratada como indisponibilidade.
+
+Consequência para o produto: em volume alto, a busca de CNPJ exige um plano pago do CNPJ.ws ou outro provedor. Isso fica registrado como limite conhecido.
 
 ## 3. Estado atual do repositório
 
 | Item | Situação |
 |---|---|
 | Validação de CPF e CNPJ, telefone, dias úteis, slugs e utilitários | Presente e deployado na DevEd: 109 testes passando, sem erros. |
-| Named Credentials `ViaCEP` e `BrasilAPI` | Criadas (`NoAuthentication`). |
+| Named Credentials `ViaCEP` e `CnpjWs` | Criadas (`NoAuthentication`) e testadas com chamadas reais pela org. |
 | Permission set `Busca_Dados_Cadastrais` | Criado, sem acessos ainda. |
-| Clients HTTP (ViaCepClient, BrasilApiClient) | Presentes e deployados na DevEd, com 11 testes usando HttpCalloutMock. Erros de infraestrutura viram ExternalApiException; entrada inválida vira InvalidInputException. |
+| Clients HTTP (ViaCepClient, CnpjWsClient) | Presentes e deployados na DevEd, com 11 testes usando HttpCalloutMock. Erros de infraestrutura viram ExternalApiException; entrada inválida vira InvalidInputException. |
 | Service (BuscaDadosService) e Controller (BuscaDadosController) | Presentes e deployados na DevEd. O Controller traduz erros para mensagens genéricas e registra o detalhe via BuscaErrorReporter. |
 | Cache | **Não iniciado.** Fase 3 ou 4. |
 | LWC de busca | **Não iniciado.** |
@@ -69,7 +77,7 @@ Projeto em API **67.0**, o mesmo do `projeto-entrevista`.
 ## 4. Fases previstas
 
 1. **Estrutura e metadados** (esta fase): Named Credentials, permission set e documento de decisões.
-2. **Clients HTTP** para ViaCEP e BrasilAPI, com testes e mocks. *(concluída)*
+2. **Clients HTTP** para ViaCEP e CNPJ.ws, com testes e mocks. *(concluída)*
 3. **Service e Controller**, com validação e tratamento de erro. *(concluída)*
 4. **Cache** com Platform Cache e fallback.
 5. **LWC de busca**, com acessibilidade.
