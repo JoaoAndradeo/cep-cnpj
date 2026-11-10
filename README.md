@@ -15,6 +15,17 @@ As decisões técnicas e o histórico de cada etapa estão em [docs/decisoes-tec
 - **Erros:** entrada inválida, CEP ou CNPJ inexistente e falha das APIs têm mensagens próprias para o usuário.
 - **Acessibilidade:** rótulos em todos os campos, resultados anunciados por leitor de tela e foco no título do resultado depois da busca.
 
+## Por que importa
+
+Digitar endereço e dados de empresa à mão gera erro e retrabalho. Um CEP ou uma razão social digitados errado afetam entrega, cobrança e cadastro.
+
+## Ganho
+
+- Menos digitação e menos erro de endereço e de razão social.
+- O CNPJ é validado antes da consulta, então não há chamada desnecessária à API.
+- O cache reduz consultas e ajuda a respeitar o limite de 3 consultas por minuto da CNPJ.ws.
+- As chaves e os endereços das APIs ficam fora do código, nas Named Credentials.
+
 ## Como o código se organiza
 
 - `BuscaDadosController`: expõe os métodos para o LWC e transforma erros em mensagens para a tela.
