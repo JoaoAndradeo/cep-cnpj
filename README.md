@@ -33,37 +33,9 @@ Digitar endereço e dados de empresa à mão gera erro e retrabalho. Um CEP ou u
 - `ViaCepClient` e `CnpjWsClient`: fazem a chamada a cada API e leem a resposta.
 - `BuscaCacheStore`: usa Platform Cache e, se a partição não existir, o objeto `Busca_Cache__c`.
 
-## Deploy
-
-Pré-requisitos: Salesforce CLI, Node.js (para os testes Jest) e uma Developer Edition.
-
-```bash
-sf org login web --alias DevEd --set-default --instance-url https://login.salesforce.com
-sf project deploy start --source-dir force-app --target-org DevEd --test-level RunLocalTests
-sf org assign permset --name Busca_Dados_Cadastrais --target-org DevEd
-```
-
-Depois, ative a App Page **Busca de Dados Cadastrais** em *Setup → Lightning App Builder* e atribua-a a um app.
-
-Testes do LWC:
-
-```bash
-npm install
-npm run test:unit
-```
-
-## Testes
-
-- Apex: 143 testes passando na org. Como a org inteira roda os testes, a biblioteca de Invocable Actions entra nessa conta.
-- Cobertura das classes da busca: entre 91% e 100%. As classes de DTO e de exceção não têm lógica, então aparecem com 0%.
-- Jest: 8 testes do componente `cepCnpjBusca`.
-
-Os testes Apex usam `HttpCalloutMock` e stubs. A chamada real às APIs foi testada à parte, de dentro da org.
-
 ## Limitações
 
 - **CNPJ.ws:** a API pública aceita 3 consultas por minuto por IP. Acima disso, a busca mostra a mensagem de indisponibilidade.
 - **BrasilAPI:** foi a primeira escolha, mas bloqueou as chamadas vindas do Salesforce (HTTP 403). A troca está em [docs/decisoes-tecnicas.md](docs/decisoes-tecnicas.md).
 - **Erros técnicos:** vão para o debug log. Ainda não são enviados ao Logger.
 - **Cache:** a partição de Platform Cache tem 1 MB. Sem ela na org, o cache usa o objeto `Busca_Cache__c`.
-- **Análise estática:** o projeto não passou pelo Code Analyzer.
