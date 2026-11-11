@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Busca_Dados_Cadastrais_App</application>
+        <visible>true</visible>
+    </applicationVisibilities>
     <label>Busca Dados Cadastrais</label>
     <classAccesses>
         <apexClass>BuscaDadosController</apexClass>
@@ -26,4 +30,8 @@
         <object>Busca_Cache__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>Busca_Dados_Cadastrais</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>

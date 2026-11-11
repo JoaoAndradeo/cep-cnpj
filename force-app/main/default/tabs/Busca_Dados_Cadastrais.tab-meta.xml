@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Busca de endereço por CEP e de dados de empresa por CNPJ.</description>
+    <flexiPage>Busca_Dados_Cadastrais</flexiPage>
+    <label>Busca de Dados Cadastrais</label>
+    <motif>Custom51: Magnifying Glass</motif>
+</CustomTab>

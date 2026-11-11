@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Consulta de CEP (ViaCEP) e de CNPJ (CNPJ.ws) por Named Credential.</description>
+    <formFactors>Large</formFactors>
+    <label>Busca de Dados Cadastrais</label>
+    <navType>Standard</navType>
+    <tabs>Busca_Dados_Cadastrais</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>
